@@ -37,7 +37,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* TJENESTER */}
+        {/* DIVERSE TJENESTER */}
         <section id="tjenester" className="text-center scroll-mt-24">
           <h2 className="text-3xl font-bold mb-4">Tjenester</h2>
           <p className="text-slate-300 mb-10">
