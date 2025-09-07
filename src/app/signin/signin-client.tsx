@@ -6,11 +6,9 @@ import { supabase } from "@/lib/supabase/client";
 export default function SignInClient({ redirectTo }: { redirectTo: string }) {
   const [email, setEmail] = useState("");
   const [sending, setSending] = useState(false);
-  
+
   const withGoogle = async () => {
     try {
-      await supabase.auth.signOut()
-      localStorage.removeItem('sb_user')
       const origin = window.location.origin;
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
@@ -20,9 +18,10 @@ export default function SignInClient({ redirectTo }: { redirectTo: string }) {
           queryParams: { prompt: "consent" },
         },
       });
-      if (error) alert(error.message); // shows pre-redirect issues
-    } catch (e: any) {
-      alert(e?.message ?? "Unknown sign-in error");
+      if (error) alert(error.message);
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : "Unknown sign-in error";
+      alert(msg);
     }
   };
 
@@ -37,8 +36,9 @@ export default function SignInClient({ redirectTo }: { redirectTo: string }) {
       });
       if (error) throw error;
       alert("Check your email for a magic link.");
-    } catch (err: any) {
-      alert(err.message ?? "Something went wrong.");
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : "Something went wrong.";
+      alert(msg);
     } finally {
       setSending(false);
     }
