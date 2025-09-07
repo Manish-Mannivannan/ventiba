@@ -6,15 +6,17 @@ import SignInClient from './signin-client'
 export default async function SignInPage({
   searchParams,
 }: {
-  searchParams?: { redirect?: string }
+  searchParams?: Promise<{ redirect?: string }>
 }) {
+  const sp = (await searchParams) ?? {}
+  const next = sp.redirect ?? '/'
+
   const supabase = createServerComponentClient({ cookies })
   const {
     data: { session },
   } = await supabase.auth.getSession()
 
-  const next = searchParams?.redirect || '/'
-  if (session) redirect(next) // already logged in → bounce to target
+  if (session) redirect(next)
 
   return <SignInClient redirectTo={next} />
 }
