@@ -44,6 +44,15 @@ export default function SignInClient({ redirectTo }: { redirectTo: string }) {
     }
   };
 
+  const signOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      alert(error.message);
+    } else {
+      alert("Signed out successfully.");
+    }
+  };
+
   return (
     <main className="min-h-[60vh] grid place-items-center p-6">
       <div className="w-full max-w-sm grid gap-4">
@@ -78,6 +87,12 @@ export default function SignInClient({ redirectTo }: { redirectTo: string }) {
         >
           Continue as guest
         </a>
+
+        <hr className="my-4" />
+
+        <button onClick={signOut} className="border px-3 py-2 rounded bg-red-50">
+          Sign out
+        </button>
       </div>
     </main>
   );
